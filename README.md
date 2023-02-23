@@ -12,3 +12,18 @@ We provide **two main scripts** to peform **differential expression analysis (DE
 
 ## Contact
 If you have any questions or issues, feel free to open an issue or directly email Aida Ripoll-Cladellas (aida.ripoll@bsc.es)
+
+## Required Software
+**R** >=4.1.2 version: You need to install the packages loaded in the:
+* Two main DEA scripts: [sc-DEA](scDEA_MAST_glmer.R) and [pseudobulk-DEA](pseudobulkDEA_limmadream.R)
+* Add-on subsetting script: [subsetting script](subset_by_metadata.R)
+* Additional scripts in the [scripts](scripts) directory
+
+## Required Input
+This section explains the input data and it’s structure to run the three scripts: [sc-DEA](scDEA_MAST_glmer.R), [pseudobulk-DEA](pseudobulkDEA_limmadream.R), and [subsetting script](subset_by_metadata.R).
+
+*Of note*: To follow better the explanations in the **Required Input** section, you can clone this repository and change your current working directory.   
+```
+git clone https://github.com/aidarripoll/wg1-qc_filtering.git  
+cd wg1-qc_filtering
+```
