@@ -64,9 +64,9 @@ Here is the structure of the [testing input directory](inputs/). This input dire
 
 #### Main input directory ([inputs/](inputs/))
 It contains a directory for each Azimuth's level, **[L1](inputs/L1/)** or L2, with the main outputs per cell type from WG3 (I): 
-* ${cell_type}.Exp.txt: Pseudobulk gene expression matrix per donor-pool combination (PFlogPF normalization + mean on QC-filtered single-cell gene expression matrix)
-* ${cell_type}.Qced.Normalized.SCs.Rds: QC-filtered single-cell gene expression matrix
-* ${cell_type}.covariates.txt: Donor metadata (from the psam file in WG1 pipeline)
+* **${cell_type}.Exp.txt:** Pseudobulk gene expression matrix per donor-pool combination (PFlogPF normalization + mean on QC-filtered single-cell gene expression matrix)
+* **${cell_type}.Qced.Normalized.SCs.Rds:** QC-filtered single-cell gene expression matrix
+* **${cell_type}.covariates.txt:** Donor metadata (from the psam file in WG1 pipeline)
 
 It also contains a file **[donor_pool_stim.txt](inputs/donor_pool_stim.txt)** with the sample information associated to the donor, the pool and the stimulation condtion.
 
@@ -85,7 +85,7 @@ It also contains a file **[donor_pool_stim.txt](inputs/donor_pool_stim.txt)** wi
 | ID_6  | pilot3_lane1  | UT  |
 
 #### DEA covariates files: sc-DEA ([scDEA_covariates.tab](scDEA_covariates.tab)) and pseudobulk-DEA ([pseudobulkDEA_covariates.tab](pseudobulkDEA_covariates.tab))
-A csv file that has in the:
+A priori, this file should not be modified. Each tsv file that has in the:
 * 1st column (covariate): Covariates included in the model
 * 2nd column (type): Fixed/random effect
 * 3rd column (class): Categorical (factor) or quantitative (integer, double)
@@ -103,46 +103,13 @@ sc-DEA ([scDEA_covariates.tab](scDEA_covariates.tab))
 | age  | fixed  | integer  | 
 | Donor_Pool  | random  | factor  | 
 
-covariate type  class
-SEX fixed  factor
-age  fixed  integer
-Donor_Pool  random factor
-
 pseudobulk-DEA ([pseudobulkDEA_covariates.tab](pseudobulkDEA_covariates.tab))
-
-| L1 | L2 |  
-| ------------- | ------------- |  
-| CD4T  | Treg  |  
-| CD4T | CD4 Naive |  
-| CD4T| CD4 TCM |  
-| CD4T| CD4 TEM |   
-| CD4T | CD4 CTL |   
-| CD4T | CD4 Proliferating | 
-| CD8T | CCD8 Naive  |  
-| CD8T | CD8 TCM  |  
-| CD8T | CD8 TEM  |  
-| CD8T | CD8 Proliferating  |  
-| T_other | MAIT  |  
-| T_other | dnT  |  
-| T_other | gdT  |  
-| T_other | ILC  |  
-| NK | NK  |  
-| NK | NK Proliferating  |  
-| NK | NK_CD56bright  |  
-| Mono | CD14 Mono  |  
-| Mono | CD16 Mono  |  
-| DC | cDC1  |  
-| DC | cDC2  |  
-| DC | pDC  |  
-| DC | ASDC  |  
-| B | B naive  |  
-| B | B intermediate  |  
-| B | B memory  |  
-| B | Plasmablast  |  
-| HSPC | HSPC  |  
-| Platelet | Platelet  |  
-| Eryth | Eryth  |  
-
+| covariate  | type | class  | 
+| ------------- | ------------- | ------------- | 
+| SEX  | fixed  | factor  | 
+| age  | fixed  | integer  | 
+| CellCount  | fixed  | integer  | 
+| Donor_Pool  | random  | factor  |
 
 ### Optional Data
 #### Metadata variables ([metadata_variables.tab](/metadata_variables.tab))
