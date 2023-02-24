@@ -359,5 +359,15 @@ Provided_Ancestry.EUR/
 * `expr`: Select genes with a minimum of frequency across donors. You can try to set it to 0.5.
 * `cv`: Select genes with a minimum of variation across donors. You can try to set it to 0.5, which will be equivalent to the top two quartiles based on their squared coefficient of variation (CV^2 = variance / mean^2) calculated across all cells of each different cell-type.
 
+-------
+
+## Running time and memory requirements
+* [sc-DEA](/scDEA_MAST_glmer.R) and [pseudobulk-DEA](/pseudobulkDEA_limmadream.R): To speed up the running time and improve the memory requirements of these two main scripts, we recommend to submit each of the commands of the **Running the sc-DEA script** and the **Running the pseudobulk-DEA script** section as an independent job on your HPC infrastructure (i.e., run each job as an element of a job array). In this case, each job will be defined by the combination of: `dataset - cell level - cell type - phenotype`.  
+
+* An example of a SLURM job file:
+
+* The running time and memory requirements for the largest combination (`dataset - cell level - cell type - phenotype`) in a dataset of 40 donors was:
+`--cpus-per-task=XXX` and `--nodes=XXX`. 
+
 
 
