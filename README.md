@@ -348,16 +348,16 @@ Provided_Ancestry.EUR/
 
 **3.** Additional parameters:
 
-* It can be that `variancePartition::dream()` fails due to genes with high weights. It has been observed in some specific cases, specially when using sum to aggregate single-cell to pseudobulk. These are some potential solutions proposed by the `variancePartition` developer (See the [github issue](https://github.com/GabrielHoffman/variancePartition/issues/66) for further details):
+3.1. It can be that `variancePartition::dream()` fails due to genes with high weights. It has been observed in some specific cases, specially when using sum to aggregate single-cell to pseudobulk. These are some potential solutions proposed by the `variancePartition` developer (See the [github issue](https://github.com/GabrielHoffman/variancePartition/issues/66) for further details):
 
-1. `span`: If we want to keep all the genes, we can reduce the `span` parameter (default = 0.5) to make sure we will not have this issue anymore. This change will not have an important impact on other genes as it is only affecting the right tail (where there are very few points). You can try to set it to 0.1.
+* `span`: If we want to keep all the genes, we can reduce the `span` parameter (default = 0.5) to make sure we will not have this issue anymore. This change will not have an important impact on other genes as it is only affecting the right tail (where there are very few points). You can try to set it to 0.1.
 
-2. `weights`: If we want to remove the genes with high weights to avoid errors, we can detect these few cases by picking the outliers (high weights) from the weights distribution (`variancePartition::voomWithDreamWeights()` output), remove them from the pseudobulk-gene expression matrix, and run again `variancePartition::dream()`. You can try to set it to 0.001 or 0.005. 
+* `weights`: If we want to remove the genes with high weights to avoid errors, we can detect these few cases by picking the outliers (high weights) from the weights distribution (`variancePartition::voomWithDreamWeights()` output), remove them from the pseudobulk-gene expression matrix, and run again `variancePartition::dream()`. You can try to set it to 0.001 or 0.005. 
 
-* At this moment, we are not setting any gene expression threshold. We could change this by changing the following parameters:
+3.2. At this moment, we are not setting any gene expression threshold. We could change this by changing the following parameters:
 
-1. `expr`: Select genes with a minimum of frequency across donors. You can try to set it to 0.5.
-2. `cv`: Select genes with a minimum of variation across donors. You can try to set it to 0.5, which will be equivalent to the top two quartiles based on their squared coefficient of variation (CV^2 = variance / mean^2) calculated across all cells of each different cell-type.
+* `expr`: Select genes with a minimum of frequency across donors. You can try to set it to 0.5.
+* `cv`: Select genes with a minimum of variation across donors. You can try to set it to 0.5, which will be equivalent to the top two quartiles based on their squared coefficient of variation (CV^2 = variance / mean^2) calculated across all cells of each different cell-type.
 
 
 
