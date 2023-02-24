@@ -39,47 +39,76 @@ We have provided some **testing inputs** in the **[inputs directory](inputs/)** 
 Here is the structure of the [testing input directory](inputs/). This input directory (*inputs/*) should have the same structure as the WG3 (I) pipeline output directory. We will need only the following files since the other ones will be used for the eQTL calling pipeline in the WG3 (II):
 
 **inputs/**    
-└── L1  
-    ├── B.covariates.txt  
-    ├── B.Exp.txt  
-    ├── B.Qced.Normalized.SCs.Rds  
-└── donor_pool_stim.txt  
-    
+```bash
+|-- L1
+|   |-- B.Exp.txt
+|   |-- B.Qced.Normalized.SCs.Rds
+|   |-- B.covariates.txt 
+|-- donor_pool_stim.txt
+
+````
+
 ### Required Data
-**wg1-qc_filtering**  
-|-- azimuth_l1_l2.csv    
-|-- downsampling.tab    
-|-- metadata_variables.tab    
-|-- qc_mad.tab    
-|-- wg2-cell_type_classification    
+**wg3-sc_pseudobulk_DEA/**  
+```bash
+|-- donor_sample.tab
+|-- inputs
+|   |-- L1
+|   |   |-- B.Exp.txt
+|   |   |-- B.Qced.Normalized.SCs.Rds
+|   |   |-- B.covariates.txt 
+|   |-- donor_pool_stim.txt
+|-- pseudobulkDEA_covariates.tab
+|-- scDEA_covariates.tab
+```
 
-#### QC-MAD combinations ([qc_mad.tab](qc_mad.tab))
-A tsv file that has in the:
-* 1st column: QC metrics. By default, number of UMIs (*nCount_RNA*) and % of mitochondrial genes (*percent.mt*).
-* 2nd column: Upper or lower threshold. By default, lower for *nCount_RNA* and upper for *percent.mt*.
-* 3rd and 4rd columns: minimum and maximum MADs. By default, *minimum*=1 and *maximum*=5.
+#### Main input directory ([inputs/](inputs/))
+It contains a directory for each Azimuth's level, **[L1](inputs/L1/)** or L2, with the main outputs per cell type from WG3 (I): 
+* ${cell_type}.Exp.txt: Pseudobulk gene expression matrix per donor-pool combination (PFlogPF normalization + mean on QC-filtered single-cell gene expression matrix)
+* ${cell_type}.Qced.Normalized.SCs.Rds: QC-filtered single-cell gene expression matrix
+* ${cell_type}.covariates.txt: Donor metadata (from the psam file in WG1 pipeline)
+
+It also contains a file **[donor_pool_stim.txt](inputs/donor_pool_stim.txt)** with the sample information associated to the donor, the pool and the stimulation condtion.
 
 *Of note*:
-* Tab separated
-* It is assumed that the QC metrics are calculated in the seurat object as a result from WG1 pipeline, and thus, they are columns of the metadata slot of the seurat object.
-* This file must have this header. 
-* The QC-MAD combinations file provided for the test dataset is the [qc_mad.tab](/qc_mad.tab) file:
+* Tab separated.
+* The header and the values of the columns should be the same as the ones in the [pseudobulk-](inputs/L1/B.Exp.txt) and [sc-](inputs/L1/Qced.Normalized.SCs.Rds)gene expression files, and in the [donor metadata file](inputs/L1/B.covariates.txt).
+* The [sample information file](inputs/donor_pool_stim.txt) provided for testing has the following structure:
 
-| QC_metric  | bound | MAD_min  | MAD_max |
-| ------------- | ------------- | ------------- | ------------- |
-| nCount_RNA  | lower  | 1  | 5 |
-| percent.mt  | upper  | 1  | 5 |
+| Donor  | Pool | Stimulation  | 
+| ------------- | ------------- | ------------- | 
+| ID_1  | pilot3_lane1  | UT  | 
+| ID_2  | pilot3_lane1  | UT  | 
+| ID_3  | pilot3_lane1  | UT  | 
+| ID_4  | pilot3_lane1  | UT  |
+| ID_5  | pilot3_lane1  | UT  | 
+| ID_6  | pilot3_lane1  | UT  |
 
-#### Azimuth l1-l2 pairing file ([azimuth_l1_l2.csv](/azimuth_l1_l2.csv))
+#### DEA covariates files: sc-DEA ([scDEA_covariates.tab](scDEA_covariates.tab)) and pseudobulk-DEA ([pseudobulkDEA_covariates.tab](pseudobulkDEA_covariates.tab))
 A csv file that has in the:
-* 1st column: Azimuth's level 1 cell type classification (L1).
-* 2nd column: Azimuth's level 2 cell type classification (L2).
+* 1st column (covariate): Covariates included in the model
+* 2nd column (type): Fixed/random effect
+* 3rd column (class): Categorical (factor) or quantitative (integer, double)
 
 *Of note*:
-* Semmicolon separated.
-* It is assumed that the Azimuth's level 2 classification is predicted from WG2 pipeline from WG1 pipeline, whereas Azimuth's level 1 has been manually  defined to make a broader cell type classification.  
+* Tab separated.
+* The values of the 1st column (covariate) should be the same as the ones in the [pseudobulk-](inputs/L1/B.Exp.txt) and [sc-](inputs/L1/Qced.Normalized.SCs.Rds)gene expression files, and in the [donor metadata file](inputs/L1/B.covariates.txt).  
 * This file must have this header. 
-* The Azimuth l1-l2 pairing file provided for the test dataset is the [azimuth_l1_l2.csv](/azimuth_l1_l2.csv) file:
+* The covariates files provided for testing have the following structure:
+
+sc-DEA ([scDEA_covariates.tab](scDEA_covariates.tab))
+| covariate  | type | class  | 
+| ------------- | ------------- | ------------- | 
+| SEX  | fixed  | factor  | 
+| age  | fixed  | integer  | 
+| Donor_Pool  | random  | factor  | 
+
+covariate type  class
+SEX fixed  factor
+age  fixed  integer
+Donor_Pool  random factor
+
+pseudobulk-DEA ([pseudobulkDEA_covariates.tab](pseudobulkDEA_covariates.tab))
 
 | L1 | L2 |  
 | ------------- | ------------- |  
