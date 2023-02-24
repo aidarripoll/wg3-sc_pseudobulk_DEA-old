@@ -1,0 +1,4 @@
+covariate type  class
+SEX fixed  factor
+age  fixed  integer
+Donor_Pool  random factor
