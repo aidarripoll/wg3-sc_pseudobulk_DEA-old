@@ -13,6 +13,7 @@ We provide **two main scripts** to peform **differential expression analysis (DE
 ## Contact
 If you have any questions or issues, feel free to open an issue or directly email Aida Ripoll-Cladellas (aida.ripoll@bsc.es)
 
+
 -------
 
 ## Required Software
@@ -135,3 +136,132 @@ This is a tsv file that has in the:
 | Donor  | Provided_Ancestry  | EUR  | 
 | Sample  | Stimulation  | UT  | 
 
+## Running the sc/pseudobulk-DEA
+*Of note*: 
+
+* If you have not done it yet, the first step would be to *clone** this repository and change your current working directory. 
+
+```
+git clone https://github.com/aidarripoll/wg3-sc_pseudobulk_DEA.git
+cd wg3-sc_pseudobulk_DEA
+```
+
+* This sc/pseudobulk-DEA is meant to be run on scRNA-seq data composed by **only one sample per donor**. In case you have more than one sample per donor (e.g., stimulated vs. non-stimulated samples from the same donor, etc...) you should run the **[subsetting script](/subset_by_metadata.R)** to select individuals with specifics characteristics (e.g., only non-stimulated samples, etc...). For this analysis, we ask you to only select european individuals and non-stimulated samples (e.g, [donor_sample.tab](/donor_sample.tab)). 
+
+* The **functions** called in the ** mandatory sc/pseudobulk-DEA scripts** ([sc-DEA](/scDEA_MAST_glmer.R) and in the [pseudobulk-DEA](/pseudobulkDEA_limmadream.R)), and in the **[optional subsetting script](/subset_by_metadata.R)** are defined in the [external scripts](/scripts/).
+
+### Running the subsetting script (OPTIONAL)
+
+**1.** Set common environmental variables:  
+```
+cell_level=L1
+cell_type=B
+donor_sample=donor_sample.tab #default
+input_directory=inputs #default
+output_directory=subset_by_metadata #default
+```
+
+**2.** Running the **[subsetting script](/subset_by_metadata.R)**:
+```
+Rscript subset_by_metadata.R -l $cell_level -c $cell_type -m $donor_sample -i $input_directory -o $output_directory
+```
+
+The output directory (**[subset_metadata/](/subset_metadata/))** contains the same files as the [original input directory from WG3 (I) pipeline](/inputs/) but only for the selected samples.
+
+```bash
+-- Provided_Ancestry.EUR
+    -- Stimulation.UT
+        |-- L1
+        |   |-- B.Exp.txt
+        |   |-- B.Qced.Normalized.SCs.Rds
+        |   |-- B.covariates.txt
+        |   |-- B.qtlInput.Pcs.txt
+        |   |-- B.qtlInput.txt
+        |-- donor_pool_stim.txt
+
+```
+
+In this case, you will need to redefine your `$input_directory` when running the **sc/pseudobulk-DEA scripts**.
+```
+input_directory=subset_metadata 
+```
+
+### Running the sc-DEA script
+
+**1.** Set common environmental variables:  
+```
+cell_level=L1
+cell_type=B
+phenotype=SEX #or age
+input_directory=inputs #default
+output_directory=scDEA_MAST_glmer #default
+```
+
+*Of note:*
+* Set the `$phenotype` variable to SEX and age (in separate runs).
+* If you needed to run the previous section on subsetting the data, you should redefine your `$input_directory` variable and add the `$donor_sample` variable:
+
+```
+input_directory=subset_metadata 
+donor_sample=donor_sample.tab 
+```
+
+**2.** Running the **[sc-DEA](/scDEA_MAST_glmer.R)**:
+
+2.1. If you needed to run the previous section on subsetting the data:
+
+```
+Rscript pseudobulkDEA_limmadream.R -l $cell_level -c $cell_type -v $phenotype -m $donor_sample
+
+```
+
+2.2. If you did not need to run the previous section on subsetting the data:
+
+```
+Rscript pseudobulkDEA_limmadream.R -l $cell_level -c $cell_type -v $phenotype 
+
+```
+
+The output directory (**[scDEA_MAST_glmer/](/scDEA_MAST_glmer/))** has the following structure:
+```bash
+L1
+|-- SEX
+|   |-- B
+|       |-- de_glmer_nagq0.degs.rds
+|       |-- de_glmer_nagq0.rds
+|       |-- pbmc_sca.rds
+|       |-- pbmc_sca_raw.rds
+|       `-- pbmc_so.rds
+|-- age
+    |-- B
+        |-- de_glmer_nagq0.degs.rds
+        |-- de_glmer_nagq0.rds
+        |-- pbmc_sca.rds
+        |-- pbmc_sca_raw.rds
+        |-- pbmc_so.rds
+```
+
+*Of note*: If you have run 2.1, the output directory (**[scDEA_MAST_glmer/](/scDEA_MAST_glmer/))** will contain some subdirectories with the same files. For example:
+
+```bash
+Provided_Ancestry.EUR
+|-- Stimulation.UT
+    |-- L1
+        |-- SEX
+        |   |-- B
+        |       |-- de_glmer_nagq0.degs.rds
+        |       |-- de_glmer_nagq0.rds
+        |       |-- pbmc_sca.rds
+        |       |-- pbmc_sca_raw.rds
+        |       |-- pbmc_so.rds
+        |-- age
+            |-- B
+                |-- de_glmer_nagq0.degs.rds
+                |-- de_glmer_nagq0.rds
+                |-- pbmc_sca.rds
+                |-- pbmc_sca_raw.rds
+                |-- pbmc_so.rds
+
+```
+
+In this case, you will need to redefine your `$input_directory` when running the **sc/pseudobulk-DEA scripts**.
