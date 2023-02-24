@@ -211,15 +211,13 @@ donor_sample=donor_sample.tab
 2.1. If you needed to run the previous section on subsetting the data:
 
 ```
-Rscript pseudobulkDEA_limmadream.R -l $cell_level -c $cell_type -v $phenotype -m $donor_sample
-
+Rscript scDEA_MAST_glmer.R -l $cell_level -c $cell_type -v $phenotype -m $donor_sample -i $input_directory -o $output_directory 
 ```
 
 2.2. If you did not need to run the previous section on subsetting the data:
 
 ```
-Rscript pseudobulkDEA_limmadream.R -l $cell_level -c $cell_type -v $phenotype 
-
+Rscript scDEA_MAST_glmer.R -l $cell_level -c $cell_type -v $phenotype -i $input_directory -o $output_directory
 ```
 
 The output directory (**[scDEA_MAST_glmer/](/scDEA_MAST_glmer/))** has the following structure:
@@ -231,7 +229,7 @@ L1
 |       |-- de_glmer_nagq0.rds
 |       |-- pbmc_sca.rds
 |       |-- pbmc_sca_raw.rds
-|       `-- pbmc_so.rds
+|       |-- pbmc_so.rds
 |-- age
     |-- B
         |-- de_glmer_nagq0.degs.rds
@@ -241,7 +239,7 @@ L1
         |-- pbmc_so.rds
 ```
 
-*Of note*: If you have run 2.1, the output directory (**[scDEA_MAST_glmer/](/scDEA_MAST_glmer/))** will contain some subdirectories with the same files. For example:
+*Of note*: If you have run 2.1, the output directory (**[scDEA_MAST_glmer/](/scDEA_MAST_glmer/)**) will contain some subdirectories with the same files. For example:
 
 ```bash
 Provided_Ancestry.EUR
@@ -264,4 +262,83 @@ Provided_Ancestry.EUR
 
 ```
 
-In this case, you will need to redefine your `$input_directory` when running the **sc/pseudobulk-DEA scripts**.
+### Running the pseudobulk-DEA script
+
+**1.** Set common environmental variables:  
+```
+cell_level=L1
+cell_type=B
+phenotype=SEX #or age
+input_directory=inputs #default
+output_directory=pseudobulkDEA_limmadream #default
+```
+
+*Of note:*
+* Set the `$phenotype` variable to SEX and age (in separate runs).
+* If you needed to run the previous section on subsetting the data, you should redefine your `$input_directory` variable and add the `$donor_sample` variable:
+
+```
+input_directory=subset_metadata 
+donor_sample=donor_sample.tab 
+```
+
+**2.** Running the **[pseudobulk-DEA](/pseudobulkDEA_limmadream.R)**:
+
+2.1. If you needed to run the previous section on subsetting the data:
+
+```
+Rscript pseudobulkDEA_limmadream.R -l $cell_level -c $cell_type -v $phenotype -m $donor_sample -i $input_directory -o $output_directory 
+```
+
+2.2. If you did not need to run the previous section on subsetting the data:
+
+```
+Rscript pseudobulkDEA_limmadream.R -l $cell_level -c $cell_type -v $phenotype -i $input_directory -o $output_directory
+```
+
+The output directory (**[pseudobulkDEA_limmadream/](/pseudobulkDEA_limmadream/)**) has the following structure:
+```bash
+L1
+|-- SEX
+|   |-- B
+|       |-- eBayes
+|           |-- SEX.combinations.degs.rds
+|           |-- SEX.combinations.rds
+|           |-- SEXM_SEXF.rds
+|           |-- SEXM_SEXF.tsv
+|           |-- SEXM_SEXF.vars.rds
+|-- age
+    |-- B
+        |-- eBayes
+            |-- age.combinations.degs.rds
+            |-- age.combinations.rds
+            |-- age.rds
+            |-- age.tsv
+            |-- age.vars.rds
+```
+
+*Of note*: If you have run 2.1, the output directory (**[pseudobulkDEA_limmadream/](/pseudobulkDEA_limmadream/)**) will contain some subdirectories with the same files. For example:
+
+```bash
+Provided_Ancestry.EUR/
+|-- Stimulation.UT
+    |-- L1
+        |-- SEX
+        |   |-- B
+        |       |-- eBayes
+        |           |-- SEX.combinations.degs.rds
+        |           |-- SEX.combinations.rds
+        |           |-- SEXM_SEXF.rds
+        |           |-- SEXM_SEXF.tsv
+        |           |-- SEXM_SEXF.vars.rds
+        |-- age
+            |-- B
+                |-- eBayes
+                    |-- age.combinations.degs.rds
+                    |-- age.combinations.rds
+                    |-- age.rds
+                    |-- age.tsv
+                    |-- age.vars.rds
+
+```
+
