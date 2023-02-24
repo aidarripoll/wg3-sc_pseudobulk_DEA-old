@@ -117,41 +117,21 @@ pseudobulk-DEA ([pseudobulkDEA_covariates.tab](/pseudobulkDEA_covariates.tab))
 |-- donor_sample.tab
 ```
 #### Sample information associated to the donor ([donor_sample.tab](/donor_sample.tab))
-A tsv file that has in the:
-* 1st column: Metadata variable name. 
-* 2nd column: Metadata variable type. 
-* 3rd and 4rd columns: minimum and maximum MADs. By default, *minimum*=1 and *maximum*=5.
+This file is only needed if you have more than one sample per donor (e.g., stimulated vs. non-stimulated samples from the same donor, etc...). In this case, you need to run the **[subsetting script](/subset_by_metadata.R)** to select individuals with specifics characteristics (e.g., only non-stimulated samples, etc...). For this analysis, we ask you to only select european individuals and non-stimulated samples.
+
+This is a tsv file that has in the:
+* 1st column (type): Donor or sample metadata information.
+* 2nd column (covariate): Metadata variable. 
+* 3rd column (level): Category or categories to select of the associated donor/sample-metadata variable.
 
 *Of note*:
 * Tab separated.
-* This file must have this header.
-* By default, the QC statistics will be summarized at the whole dataset. You can choose to summarize them by metadata variable.
-* In case you have another type of metadata variable (e.g. stimulation condition), you could add them. For example, 'pathogen' in the 1st column (md_var) and 'condition' in the 2nd column (type).
-* It is assumed that the metadata variable names are columns of the metadata file or metadata slot of the seurat object.
-* The metadata variables file provided for the test dataset is the [metadata_variables.tab](/metadata_variables.tab) file: 
+* The values of the 2nd column (covariate) should be the same as the ones in the [pseudobulk-](/inputs/L1/B.Exp.txt) and [sc-](/inputs/L1/Qced.Normalized.SCs.Rds)gene expression files, and in the [donor metadata file](/inputs/L1/B.covariates.txt).  
+* This file must have this header. 
+* The sample information file provided for testing has the following structure:
 
-| md_var  | type |  
-| ------------- | ------------- |  
-| Pool  | donor  |  
-| Assignment  | donor  |  
-| predicted.celltype.l2  | cell  |  
-| scpred_prediction  | cell  |  
-| predicted.celltype.l1  | cell  |  
-
-
-#### Downsampling file ([downsampling.tab](/downsampling.tab))
-A tsv file that has in the:
-* 1st column: Metadata variable name. 
-* 2nd column: Number of cells to use for downsampling every level of the specified metadata variable.
-
-*Of note*:
-* Tab separated.
-* It is assumed that the metadata variable name is a column of the metadata file or metadata slot of the seurat object.
-* This file must have this header.
-* By default, the QC statistics will be calculated using the whole dataset. You can choose to downsample the whole dataset to a specific number of cells *(n)* for each level of a specific metadata variable *(md_var)*.
-* The downsampling file provided for the test dataset is the [downsampling.tab](/downsampling.tab) file: 
-
-| md_var  | n |  
-| ------------- | ------------- |  
-| predicted.celltype.l1  | 100  |  
+| type  | covariate | level  | 
+| ------------- | ------------- | ------------- | 
+| Donor  | Provided_Ancestry  | EUR  | 
+| Sample  | Stimulation  | UT  | 
 
