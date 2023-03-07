@@ -170,7 +170,7 @@ output_directory=subset_by_metadata #default
 Rscript subset_by_metadata.R -l $cell_level -c $cell_type -m $donor_sample -i $input_directory -o $output_directory
 ```
 
-The output directory (**[subset_metadata/](/subset_metadata/))** contains the same files as the [original input directory from WG3 (I) pipeline](/inputs/) but only for the selected samples.
+The output directory (**[subset_by_metadata/](/subset_by_metadata/))** contains the same files as the [original input directory from WG3 (I) pipeline](/inputs/) but only for the selected samples.
 
 ```bash
 -- Provided_Ancestry.EUR
@@ -187,7 +187,7 @@ The output directory (**[subset_metadata/](/subset_metadata/))** contains the sa
 
 In this case, you will need to redefine your `$input_directory` when running the **sc/pseudobulk-DEA scripts**.
 ```
-input_directory=subset_metadata 
+input_directory=subset_by_metadata 
 ```
 
 ### Running the sc-DEA script
@@ -206,7 +206,7 @@ output_directory=scDEA_MAST_glmer #default
 * If you needed to run the previous section on subsetting the data, you should redefine your `$input_directory` variable and add the `$donor_sample` variable:
 
 ```
-input_directory=subset_metadata 
+input_directory=subset_by_metadata 
 donor_sample=donor_sample.tab 
 ```
 
@@ -282,7 +282,7 @@ output_directory=pseudobulkDEA_limmadream #default
 * If you needed to run the previous section on subsetting the data, you should redefine your `$input_directory` variable and add the `$donor_sample` variable:
 
 ```
-input_directory=subset_metadata 
+input_directory=subset_by_metadata 
 donor_sample=donor_sample.tab 
 ```
 
